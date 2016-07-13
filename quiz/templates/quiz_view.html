@@ -4,7 +4,12 @@
 
 {% block body %}
 
+<h1>{{ quiz_view.title }}</h1>
+
 <form method="POST" action="">
+    {% csrf_token %}
+
+    {{ quiz_form.as_p }}
 
     <p>
         <button type="submit">퀴즈 시작!</button>
