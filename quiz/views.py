@@ -30,6 +30,8 @@ def view_quiz(request, pk):
         frm = StartQuizForm(request.POST)
 
         if frm.is_valid():
+            request.session['userinfo'] = frm.cleaned_data['user']
+
             return redirect('view_question', quiz_pk=q.pk, question_pk=1)
 
     ctx = {

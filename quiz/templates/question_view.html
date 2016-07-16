@@ -4,6 +4,8 @@
 
 <h3>{{ question.seq }}번째 : {{ question.title }}</h3>
 
+<p>당신은 <strong>{{ request.session.userinfo }}</strong> 입니다.</p>
+
 {% if question.image %}
 <p><img src="{{ question.image.url }}" /></p>
 {% endif %}
