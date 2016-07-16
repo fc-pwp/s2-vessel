@@ -13,12 +13,15 @@ class Quiz(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return '{}: {}'.format(self.pk, self.title)
+
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz)
     seq = models.SmallIntegerField()
     title = models.CharField(max_length=250)
-    image = models.ImageField(upload_to='questions/%Y/%m/%d/')
+    image = models.ImageField(upload_to='questions/%Y/%m/%d/', null=True)
     content = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

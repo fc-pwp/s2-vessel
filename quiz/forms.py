@@ -5,7 +5,7 @@ from .models import Question
 
 
 class StartQuizForm(forms.Form):
-    user = forms.CharField(label='당신의 이름은?', max_length=80)
+    user = forms.CharField(label='당신의 이름은?', max_length=80, min_length=2)
 
 
 class AnswerForm(forms.ModelForm):

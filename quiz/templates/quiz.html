@@ -6,7 +6,7 @@
     <h1>퀴즈 서비스, Vessel!</h1>
 
     {% for quiz in quizzes %}
-    <h3><a href="">{{ quiz.title }}</a></h3>
+    <h3><a href="{% url 'view_quiz' quiz.pk %}">{{ quiz.title }}</a></h3>
     {% empty %}
     <p>퀴즈가 없습니다.</p>
     {% endfor %}

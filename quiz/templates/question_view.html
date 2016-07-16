@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<h3>{{ question.seq }}번째 : {{ question.title }}</h3>
+
+{% if question.image %}
+<p><img src="{{ question.image.url }}" /></p>
+{% endif %}
+
+<div>
+    {{ question.content }}
+</div>
+
+<ul>
+    {% for answer in question.answer_set.all %}
+    <li>{{ answer.number }} : {{ answer.title }}
+        {% if answer.image %}
+            <br />
+            <img src="{{ answer.image.url }}" />
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
+
