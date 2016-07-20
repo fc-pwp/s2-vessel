@@ -1,0 +1,12 @@
+
+{% extends 'layout.html' %}
+
+{% block page_title %}퀴즈 서비스, Vessel{% endblock %}
+
+{% block body %}
+    <h1>퀴즈 서비스, Vessel!</h1>
+
+    {% for quiz in quizzes %}
+    <h3><a href="{% url 'quiz' quiz_pk=quiz.pk %}">{{ quiz.title }}</a></h3>
+    {% endfor %}
+{% endblock %}

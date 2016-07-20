@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+{% block body %}
+    {% for question in questions %}
+    <p>
+        {{ question.seq }} - {{ question.title }}
+    </p>
+    {% empty %}
+    {% endfor %}
+{% endblock %}

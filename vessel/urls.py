@@ -16,6 +16,20 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from django.conf.urls.static import static
+from django.conf import settings
+from quiz import views
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^quiz/(?P<quiz_pk>[0-9]+)/$', views.view_quiz, name='quiz'),
+    url(r'^quiz/(?P<quiz_pk>[0-9]+)/(?P<seq>[0-9]+)/$', views.ask_question, name='question'),
+    url(r'^quiz/(?P<quiz_pk>[0-9]+)/result$', views.view_result, name='result'),
+    url(r'^days/', views.days),
+    url(r'^quiz/$', views.quiz),
+    url(r'^quiz/all$', views.quiz_all),
 ]
+
+urlpatterns += static(
+    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+)

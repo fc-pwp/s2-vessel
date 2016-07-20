@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h1>{{ question.seq }}. {{ question.title }}</h1>
+<p>
+    당신은 <strong>{{ request.session.user }}</strong> 입니다.
+</p>
+<p>
+    {{ question.content }}
+</p>
+<ul>
+    {% for answer in question.answer_set.all %}
+    <li>
+        <a href="{% url 'question' quiz_pk=question.quiz.id seq=question.seq|add:1 %}?q={{ question.seq }}&a={{ answer.number }}" class="btn btn-primary btn-sm">
+            {{ answer.number }} : {{ answer.content }}
+        </a>
+        {% if answer.image %}
+            <br />
+            <img src="{{ answer.image.url }}" />
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% if question.image %}
+<p>
+    <img src="{{ question.image.url }}" />
+</p>
+{% endif %}
+{% endblock %}
