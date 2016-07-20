@@ -32,7 +32,7 @@ def view_quiz(request, pk):
         if frm.is_valid():
             request.session['userinfo'] = frm.cleaned_data['user']
 
-            return redirect('view_question', quiz_pk=q.pk, question_pk=1)
+            return redirect('view_question', quiz_pk=q.pk, seq=1)
 
     ctx = {
         'quiz_view': q,
@@ -41,11 +41,34 @@ def view_quiz(request, pk):
     return render(request, 'quiz_view.html', ctx)
 
 
-def view_question(request, quiz_pk, question_pk):
+def view_question(request, quiz_pk, seq):
+    answer_pk = request.GET.get('answer')
+    seq = int(seq)
     # question = Question.objects.get(id=question_pk)
-    question = get_object_or_404(Question, id=question_pk)
+    question = get_object_or_404(Question,
+            quiz__id=quiz_pk,
+            quiz__status='open',
+            seq=seq)
     # 1. Answer.objects.filter(question=question)
     # 2. question.answer_set.all()
+
+    if answer_pk and seq > 1:
+        prev_question = get_object_or_404(Question,
+                quiz__id=quiz_pk,
+                quiz__status='open',
+                seq=question.seq-1)
+
+        if not prev_question.answer_set.filter(id=answer_pk).exists():
+            raise Exception('이상한 없는 답 고르지 마')
+
+        request.session['answers'] = {
+            'quiz_pk': quiz_pk,
+            'answers': [{
+                'question_pk': prev_question.pk,
+                'answer_pk': answer_pk,
+            }],
+        }
+
     ctx = {
         'question': question,
     }

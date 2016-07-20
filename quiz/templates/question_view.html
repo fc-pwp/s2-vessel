@@ -16,7 +16,7 @@
 
 <ul>
     {% for answer in question.answer_set.all %}
-    <li>{{ answer.number }} : {{ answer.title }}
+    <li><a href="{% url 'view_question' quiz_pk=question.quiz.pk seq=question.seq|add:1 %}?answer={{ answer.pk }}" class="btn btn-success btn-sm">{{ answer.number }} : {{ answer.title }}</a>
         {% if answer.image %}
             <br />
             <img src="{{ answer.image.url }}" />

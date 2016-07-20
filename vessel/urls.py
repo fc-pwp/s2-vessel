@@ -9,7 +9,7 @@ from quiz import views as quiz_views
 
 urlpatterns = [
     url(r'^$', quiz_views.quiz, name='list_quiz'),
-    url(r'^quiz/(?P<quiz_pk>[0-9]+)/question/(?P<question_pk>[0-9]+)/$',
+    url(r'^quiz/(?P<quiz_pk>[0-9]+)/question/(?P<seq>[0-9]+)/$',
         quiz_views.view_question,
         name='view_question'),
     url(r'^quiz/(?P<pk>[0-9]+)/$', quiz_views.view_quiz, name='view_quiz'),
