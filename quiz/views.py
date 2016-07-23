@@ -61,13 +61,23 @@ def view_question(request, quiz_pk, seq):
         if not prev_question.answer_set.filter(id=answer_pk).exists():
             raise Exception('이상한 없는 답 고르지 마')
 
-        request.session['answers'] = {
-            'quiz_pk': quiz_pk,
-            'answers': [{
-                'question_pk': prev_question.pk,
-                'answer_pk': answer_pk,
-            }],
+        question_and_answer = {
+            'question_pk': prev_question.pk,
+            'answer_pk': answer_pk,
         }
+
+        #if not isinstance(request.session.get('answers']), dict):
+        #    request.session['answers'] = {}
+        if 'answers' in request.session:
+            if not isinstance(request.session['answers'], dict):
+                request.session['answers'] = {}
+        else:
+            request.session['answers'] = {}
+
+        if not isinstance(request.session['answers'].get(quiz_pk), list):
+            request.session['answers'][quiz_pk] = []
+
+        request.session['answers'][quiz_pk].append(question_and_answer)
 
     ctx = {
         'question': question,
