@@ -29,6 +29,10 @@ class Question(models.Model):
     def __str__(self):
         return '{}-{}'.format(self.seq, self.title)
 
+    def has_next_question(self):
+        return Question.objects \
+            .filter(quiz__pk=self.quiz.pk, seq=self.seq+1).exists()
+
 
 class Answer(models.Model):
     question = models.ForeignKey(Question)

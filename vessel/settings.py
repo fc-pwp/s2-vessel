@@ -95,3 +95,5 @@ MEDIA_URL = '/uploads/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploadfiles')
 
+SESSION_SAVE_EVERY_REQUEST = True
+

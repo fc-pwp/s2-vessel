@@ -6,6 +6,7 @@ from django.http import HttpResponse
 #from quiz.models import Quiz
 from .models import Quiz
 from .models import Question
+from .models import Result
 from .forms import StartQuizForm
 
 
@@ -46,9 +47,9 @@ def view_question(request, quiz_pk, seq):
     seq = int(seq)
     # question = Question.objects.get(id=question_pk)
     question = get_object_or_404(Question,
-            quiz__id=quiz_pk,
-            quiz__status='open',
-            seq=seq)
+                                 quiz__id=quiz_pk,
+                                 quiz__status='open',
+                                 seq=seq)
     # 1. Answer.objects.filter(question=question)
     # 2. question.answer_set.all()
 
@@ -89,5 +90,44 @@ def view_question(request, quiz_pk, seq):
         'question': question,
     }
     return render(request, 'question_view.html', ctx)
+
+
+def view_result(request, quiz_pk, result_pk=None):
+    quiz = get_object_or_404(Quiz, pk=quiz_pk)
+    question_count = quiz.question_set.count()
+
+    if not result_pk:
+        answer_pk = request.GET.get('answer')
+        prev_question = quiz.question_set.order_by('seq').last()
+        question_and_answer = {
+            'question_pk': prev_question.pk,
+            'answer_pk': answer_pk,
+        }
+
+        for i, item in enumerate(request.session['answers'][quiz_pk]):
+            if item['question_pk'] == question_and_answer['question_pk']:
+                request.session['answers'][quiz_pk][i]['answer_pk'] = \
+                question_and_answer['answer_pk']
+                break
+        else:
+            request.session['answers'][quiz_pk].append(question_and_answer)
+
+        if not isinstance(request.session.get('answers', {}).get(quiz_pk), list):
+            raise Exception('질문에 답하지 않고 바로 왔습니다.')
+        if len(request.session['answers'][quiz_pk]) != question_count:
+            raise Exception('모든 질문에 답변하지 않았습니다')
+
+        # todo : 결과를 계산하는 실제 코드를 짜세요.
+        result = Result.objects.get(pk=1)
+        return redirect('quiz_result', quiz_pk=quiz.pk, result_pk=result.pk)
+
+    ctx = {}
+    return render(request, 'quiz_result.html', ctx)
+
+
+
+
+
+
 
 

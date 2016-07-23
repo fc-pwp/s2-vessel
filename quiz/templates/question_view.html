@@ -22,14 +22,22 @@
 </div>
 
 <ul>
-    {% for answer in question.answer_set.all %}
+{% for answer in question.answer_set.all %}
+    {% if question.has_next_question %}
     <li><a href="{% url 'view_question' quiz_pk=question.quiz.pk seq=question.seq|add:1 %}?answer={{ answer.pk }}" class="btn btn-success btn-sm">{{ answer.number }} : {{ answer.title }}</a>
         {% if answer.image %}
             <br />
             <img src="{{ answer.image.url }}" />
         {% endif %}
     </li>
-    {% endfor %}
+    {% else %}
+    <li><a href="{% url 'process_quiz_result' quiz_pk=question.quiz.pk %}?answer={{ answer.pk }}" class="btn btn-primary btn-sm">{{ answer.number }} : {{ answer.title }}</a>
+        {% if answer.image %}
+            <br />
+            <img src="{{ answer.image.url }}" />
+        {% endif %}</li>
+    {% endif %}
+{% endfor %}
 </ul>
 
 {% endblock %}
