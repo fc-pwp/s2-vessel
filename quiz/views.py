@@ -77,7 +77,13 @@ def view_question(request, quiz_pk, seq):
         if not isinstance(request.session['answers'].get(quiz_pk), list):
             request.session['answers'][quiz_pk] = []
 
-        request.session['answers'][quiz_pk].append(question_and_answer)
+        for i, item in enumerate(request.session['answers'][quiz_pk]):
+            if item['question_pk'] == question_and_answer['question_pk']:
+                request.session['answers'][quiz_pk][i]['answer_pk'] = \
+                question_and_answer['answer_pk']
+                break
+        else:
+            request.session['answers'][quiz_pk].append(question_and_answer)
 
     ctx = {
         'question': question,

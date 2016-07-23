@@ -5,6 +5,13 @@
 <h3>{{ question.seq }}번째 : {{ question.title }}</h3>
 
 <p>당신은 <strong>{{ request.session.userinfo }}</strong> 입니다.</p>
+<div>현재 퀴즈 정보 : 
+    <p>퀴즈 : {{ request.session.answers }}</p>
+    <p>질문과 답변들</p>
+    {% for item in request.session.answers.1 %}
+        <p>{{ item.question_pk }} : {{ item.answer_pk }}</p>
+    {% endfor %}
+</div>
 
 {% if question.image %}
 <p><img src="{{ question.image.url }}" /></p>
